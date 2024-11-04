@@ -49,6 +49,9 @@ def extract_text_from_file(file):
     elif file_type in {'xlsx', 'xls'}:
         # Extract text from Excel files
         return extract_text_from_excel(file)
+    
+    elif file_type == 'csv':
+        return extract_text_from_csv(file)
 
     else:
         return "Unsupported file type"
@@ -81,5 +84,12 @@ def extract_text_from_excel(file):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".xls" if file.filename.endswith('.xls') else ".xlsx") as temp_xls:
         file.save(temp_xls.name)
         df = pd.read_excel(temp_xls.name)
+        text = df.to_string(index=False)
+    return text
+
+def extract_text_from_csv(file):
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as temp_csv:
+        file.save(temp_csv.name)
+        df = pd.read_csv(temp_csv.name)
         text = df.to_string(index=False)
     return text

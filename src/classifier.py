@@ -5,22 +5,9 @@ import tempfile
 import fitz
 from docx import Document
 import pandas as pd
+import logging
 
-def classify_file(file: FileStorage):
-    filename = file.filename.lower()
-    # file_bytes = file.read()
-
-    if "drivers_license" in filename:
-        return "drivers_license"
-
-    if "bank_statement" in filename:
-        return "bank_statement"
-
-    
-    if "invoice" in filename:
-        return "invoice"
-
-    return "unknown file"
+logger = logging.getLogger(__name__)
 
 def extract_text_from_file(file):
     filename = file.filename.lower()
@@ -28,6 +15,7 @@ def extract_text_from_file(file):
 
     if file_type in {'jpg', 'png'}:
         # Extract text from image
+        logger.info("Identified the file type as Image")
         with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as temp_file:
             file.save(temp_file.name)
             image = cv2.imread(temp_file.name)
@@ -36,24 +24,30 @@ def extract_text_from_file(file):
 
     elif file_type == 'pdf':
         # Extract text from PDF
+        logger.info("Identified the file type as PDF")
         return extract_text_from_pdf(file)
 
     elif file_type == 'docx':
         # Extract text from DOCX
+        logger.info("Identified the file type as DOCX")
         return extract_text_from_docx(file)
 
     elif file_type == 'txt':
         # Extract text from TXT
+        logger.info("Identified the file type as TXT")
         return extract_text_from_txt(file)
 
     elif file_type in {'xlsx', 'xls'}:
         # Extract text from Excel files
+        logger.info("Identified the file type as an Excel file")
         return extract_text_from_excel(file)
     
     elif file_type == 'csv':
+        logger.info("Identified the file type as CSV")
         return extract_text_from_csv(file)
 
     else:
+        logger.info("Unable to identify  the file type")
         return "Unsupported file type"
 
 def extract_text_from_pdf(file):

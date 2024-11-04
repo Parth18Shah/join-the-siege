@@ -1,3 +1,11 @@
 Flask==3.0.3
 pytest==8.3.3
 pytest-mock==3.14.0
+PyMuPDF
+python-docx 
+Faker 
+scikit-learn
+joblib
+opencv-python
+pandas 
+pytesseract

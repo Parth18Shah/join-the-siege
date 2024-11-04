@@ -3,6 +3,7 @@ import pytesseract
 import cv2
 import tempfile
 import fitz
+from docx import Document
 
 def classify_file(file: FileStorage):
     filename = file.filename.lower()
@@ -14,6 +15,7 @@ def classify_file(file: FileStorage):
     if "bank_statement" in filename:
         return "bank_statement"
 
+    
     if "invoice" in filename:
         return "invoice"
 
@@ -35,6 +37,9 @@ def extract_text_from_file(file):
         # Extract text from PDF
         return extract_text_from_pdf(file)
 
+    elif file_type == 'docx':
+        return extract_text_from_docx(file)
+
     else:
         return "Unsupported file type"
 
@@ -50,3 +55,11 @@ def extract_text_from_pdf(file):
 
         pdf_document.close()
         return text
+
+
+def extract_text_from_docx(file):
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as temp_docx:
+        file.save(temp_docx.name)
+        doc = Document(temp_docx.name)
+        text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+    return text

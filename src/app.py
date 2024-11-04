@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 
-from src.classifier import classify_file
+from src.classifier import classify_file, extract_text_from_file
 app = Flask(__name__)
 
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg'}
@@ -21,8 +21,12 @@ def classify_file_route():
     if not allowed_file(file.filename):
         return jsonify({"error": f"File type not allowed"}), 400
 
-    file_class = classify_file(file)
-    return jsonify({"file_class": file_class}), 200
+    # file_class = classify_file(file)
+    # return jsonify({"file_class": file_class}), 200
+
+    text_content = extract_text_from_file(file)
+    return jsonify({"extracted_text": text_content}), 200
+
 
 
 if __name__ == '__main__':

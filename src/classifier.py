@@ -16,11 +16,7 @@ def extract_text_from_file(file):
     if file_type in {'jpg', 'png'}:
         # Extract text from image
         logger.info("Identified the file type as Image")
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as temp_file:
-            file.save(temp_file.name)
-            image = cv2.imread(temp_file.name)
-            text = pytesseract.image_to_string(image)
-        return text
+        return extract_text_from_img(file)
 
     elif file_type == 'pdf':
         # Extract text from PDF
@@ -49,6 +45,13 @@ def extract_text_from_file(file):
     else:
         logger.info("Unable to identify  the file type")
         return "Unsupported file type"
+
+def extract_text_from_img(file):
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as temp_file:
+        file.save(temp_file.name)
+        image = cv2.imread(temp_file.name)
+        text = pytesseract.image_to_string(image)
+    return text
 
 def extract_text_from_pdf(file):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_pdf:

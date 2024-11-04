@@ -25,8 +25,17 @@ jobs:
       run: |
         python -m venv venv
         source venv/bin/activate
-        python -m pip install --upgrade pip
         pip install -r requirements.txt
+          
+    - name: Generate synthetic data
+      run: |
+        source venv/bin/activate
+        python scripts/generate_synthetic_data.py
+
+    - name: Train the model
+      run: |
+        source venv/bin/activate
+        python src/train_model.py
 
     - name: Run tests
       run: |

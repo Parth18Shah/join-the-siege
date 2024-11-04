@@ -3,11 +3,12 @@ import random
 from faker import Faker
 fake = Faker()
 
-LABELS = ['bank_statement', 'invoice', 'drivers_license', 'unknown file']
+LABELS = ['bank_statement', 'invoice', 'drivers_license', 'drivers_licence', 'unknown file']
 TEXT_TEMPLATES = {
     'bank_statement': lambda: f"Bank Statement Account Number: {fake.random_number(digits=10)} Balance: ${fake.random_int(min=1000, max=10000)} Transaction: {fake.sentence(nb_words=6)} Description: {fake.paragraph()}",
     'invoice': lambda: f"Invoice Item: {fake.word()} Quantity: {fake.random_int(min=1, max=20)} Amount: ${fake.random_number(digits=4)} Notes: {fake.sentence(nb_words=10)}",
     'drivers_license': lambda: f"Driver's License Name: {fake.name()} License Number: {fake.random_number(digits=9)} DOB: {fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=80)} Address: {fake.address()}",
+    'drivers_licence': lambda: f"Driver's Licence Name: {fake.name()} License Number: {fake.random_number(digits=9)} DOB: {fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=80)} Address: {fake.address()}",
     'unknown file': lambda: fake.text(max_nb_chars=300)
 }
 

@@ -4,6 +4,7 @@ import cv2
 import tempfile
 import fitz
 from docx import Document
+import pandas as pd
 
 def classify_file(file: FileStorage):
     filename = file.filename.lower()
@@ -45,6 +46,10 @@ def extract_text_from_file(file):
         # Extract text from TXT
         return extract_text_from_txt(file)
 
+    elif file_type in {'xlsx', 'xls'}:
+        # Extract text from Excel files
+        return extract_text_from_excel(file)
+
     else:
         return "Unsupported file type"
 
@@ -70,4 +75,11 @@ def extract_text_from_docx(file):
 
 def extract_text_from_txt(file):
     text = file.read().decode('utf-8')
+    return text
+
+def extract_text_from_excel(file):
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".xls" if file.filename.endswith('.xls') else ".xlsx") as temp_xls:
+        file.save(temp_xls.name)
+        df = pd.read_excel(temp_xls.name)
+        text = df.to_string(index=False)
     return text

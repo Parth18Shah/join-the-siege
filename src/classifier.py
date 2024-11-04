@@ -1,4 +1,3 @@
-from werkzeug.datastructures import FileStorage
 import pytesseract
 import cv2
 import tempfile

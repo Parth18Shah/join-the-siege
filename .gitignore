@@ -4,9 +4,7 @@ venv
 .vscode
 __pycache__
 *.pyc
-
 # Ignore joblib model files
 *.joblib
-
 *.log
-
+.pytest_cache

@@ -38,7 +38,12 @@ def extract_text_from_file(file):
         return extract_text_from_pdf(file)
 
     elif file_type == 'docx':
+        # Extract text from DOCX
         return extract_text_from_docx(file)
+
+    elif file_type == 'txt':
+        # Extract text from TXT
+        return extract_text_from_txt(file)
 
     else:
         return "Unsupported file type"
@@ -56,10 +61,13 @@ def extract_text_from_pdf(file):
         pdf_document.close()
         return text
 
-
 def extract_text_from_docx(file):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as temp_docx:
         file.save(temp_docx.name)
         doc = Document(temp_docx.name)
         text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+    return text
+
+def extract_text_from_txt(file):
+    text = file.read().decode('utf-8')
     return text

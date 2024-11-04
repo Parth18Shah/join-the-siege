@@ -27,9 +27,10 @@ def generate_synthetic_data(num_samples=1000):
         data.append(generate_synthetic_row(label))
 
     df = pd.DataFrame(data)
-    return df
+    return data
 
 if __name__ == "__main__":
-    df = generate_synthetic_data()
+    data = generate_synthetic_data()
+    df = pd.DataFrame(data)
     df.to_csv('./files/synthetic_data.csv', index=False)
     print("Synthetic data saved to synthetic_data.csv")
